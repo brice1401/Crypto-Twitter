@@ -34,7 +34,7 @@ stream =tweepy.Stream(auth,l)
 #this line filters twiiter streams to capture data by keywords
 stream.filter(track=['covid','corona','covid19','coronavirus','facemask','sanitizer','social-distancing'])
 
-tweets_data_path='copp.txt'
+tweets_data_path='tweet.txt'
 tweets_data=[]
 tweets_file=open(tweets_data_path,"r")
 #read in tweets and store on list
