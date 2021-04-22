@@ -1,7 +1,10 @@
+# Code venant de :
+# https://towardsdatascience.com/extracting-data-from-twitter-using-python-5ab67bff553a
+
 #import files and give access to tokens and keys
 
 import tweepy,json
-import config.py
+from config import *
 
 auth= tweepy.OAuthHandler(consumer_key,consumer_secret)
 
