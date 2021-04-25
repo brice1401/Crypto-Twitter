@@ -15,7 +15,7 @@ if sys.version_info < (3, 8):
 logging.basicConfig(level="INFO")
 log = logging.getLogger(__name__)
 
-with open("credentials.json", "r") as credentials_file:
+with open("../credentials.json", "r") as credentials_file:
     credentials = json.load(credentials_file)
 
 
