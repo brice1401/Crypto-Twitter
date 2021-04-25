@@ -6,3 +6,7 @@ tweet.txt
 
 # PyCharm
 .idea
+
+# Venv
+venv
+.venv
