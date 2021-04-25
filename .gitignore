@@ -10,3 +10,6 @@ tweet.txt
 # Venv
 venv
 .venv
+
+# Credentials of the app
+credentials.json
