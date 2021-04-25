@@ -3,11 +3,14 @@ Code inspired by: https://towardsdatascience.com/extracting-data-from-twitter-us
 """
 
 import json
-from typing import IO, Optional, List, Any
+from typing import IO, Optional, List
 import logging
 import sys
 
 import tweepy
+
+
+from crypto_twitter.authentcation import get_twitter_authentication
 
 if sys.version_info < (3, 8):
     raise RuntimeError("You have to run this code with at least python3.8")
@@ -15,19 +18,8 @@ if sys.version_info < (3, 8):
 logging.basicConfig(level="INFO")
 log = logging.getLogger(__name__)
 
-with open("credentials.json", "r") as credentials_file:
-    credentials = json.load(credentials_file)
-
-
-def get_twitter_authentication() -> Any:
-    log.info("Configuring the twitter authentication")
-    twitter_authentication = tweepy.OAuthHandler(credentials["consumer_key"], credentials["consumer_secret"])
-    twitter_authentication.set_access_token(credentials["access_token"], credentials["access_token_secret"])
-    return twitter_authentication
-
 
 class MyStreamListener(tweepy.StreamListener):
-
     def __init__(self, api=None, max_num_status: int = 100, filename_cache: str = "tweet.txt"):
         super(MyStreamListener, self).__init__()
         self.filename_cache = filename_cache
@@ -37,7 +29,7 @@ class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status) -> bool:
         tweet = status._json
-        self.store_in_cache(tweet=tweet)
+        self._store_in_cache(tweet=tweet)
         self.num_tweets += 1
         if self.num_tweets < self.max_num_status:
             # While the number of max tweet is not reached, it is not stopped
@@ -47,7 +39,7 @@ class MyStreamListener(tweepy.StreamListener):
             self.file_cache.close()
             return False
 
-    def store_in_cache(self, tweet: dict) -> None:
+    def _store_in_cache(self, tweet: dict) -> None:
         if not self.file_cache:
             self.file_cache = open(self.filename_cache, "w")
             self.num_tweets = 0
@@ -77,4 +69,3 @@ def listen_for_keywords(keywords: List[str], max_num_status: int = 100) -> None:
 if __name__ == "__main__":
     keywords_to_watch = ['covid', 'corona', 'covid19', 'coronavirus', 'facemask', 'sanitizer', 'social-distancing']
     listen_for_keywords(keywords=keywords_to_watch, max_num_status=100)
-    print("done")
